@@ -17,10 +17,11 @@ const userSchema = new mongoose.Schema({
 const todoSchema = new mongoose.Schema({
     title: String,
     description: String,
-    createdBy: String
+    createdBy: String,
+    number: Number
 });
 
-
+let totalTodos = 0;
 const Todo = mongoose.model("Todo", todoSchema);
 const User = mongoose.model("User", userSchema);
 
@@ -80,15 +81,29 @@ app.get("/todos", verifyUser, async (req, res) => {
 });
 
 app.post("/todos", verifyUser, async (req, res) => {
+    totalTodos = totalTodos + 1;
     const { title, description } = req.body;
     const newTodo = new Todo({
         title: title,
         description: description,
-        createdBy: req.user.username
+        createdBy: req.user.username,
+        number: totalTodos
     });
     await newTodo.save();
-    res.status(200).json({ message: "todo added successfully" });
+    res.status(200).json({ message: "todo added successfully", number: totalTodos });
 });
+
+app.put("/todos/:number", verifyUser, async(req,res) => {
+    const verifiedTodo = await Todo.findOne({number: parseInt(req.params.number)});
+
+    if (verifiedTodo){
+        const {updatedTitle, updatedDescription} = req.body;
+        await Todo.updateOne({number: parseInt(req.params.number)}, {$set: {title: updatedTitle, description: updatedDescription}});
+        res.status(200).json({message: "todo updated"});
+
+    }
+
+})
 
 app.listen(3000, () => {
     console.log("listening");
