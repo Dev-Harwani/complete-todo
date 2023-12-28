@@ -6,7 +6,7 @@ import LogIn from "./LogIn.jsx"
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Addtodo from "./Addtodo.jsx"
 import AllTodos from "./Alltodos.jsx";
-
+import EditTodo from "./EditTodo.jsx";
 
 function App() {
 
@@ -21,6 +21,7 @@ function App() {
                         <Route path={'/signup'} element={<SignUp />} />
                         <Route path={'/Addtodo'} element={<Addtodo />} />
                         <Route path={"/alltodos"} element={<AllTodos />}  />
+                        <Route path={"/EditTodos/:todoNumber"} element={<EditTodo />}  />
                 </Routes>
             </BrowserRouter>
         </div>

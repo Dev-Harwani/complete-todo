@@ -1,9 +1,16 @@
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
+import {TextField} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+
 
 function AllTodos() {
+
+    const navigate = useNavigate();
     const [todos, setTodos] = useState([]);
+
 
     useEffect(() => {
         fetch("http://localhost:3000/todos", {
@@ -16,11 +23,15 @@ function AllTodos() {
             .then((res) => res.json())
             .then((data) => {
                 setTodos(data);
+
             })
             .catch((error) => {
                 console.error("Error fetching todos:", error);
             });
     }, []);
+
+
+
 
     return (
         <>
@@ -40,10 +51,18 @@ function AllTodos() {
             <div>
 
                 {todos.map((todo, index) => (
-                    <Card key={index}>
+                    <Card key={index} style={{display: "flex", justifyContent:"space-evenly"}}>
                         <Typography variant="body1">
-                         {index + 1}.) {todo.title} - {todo.description}
+                            <div>
+                         TITLE: {todo.title} DESCRIPTION: {todo.description}
 
+                            </div>
+                            <div>
+                            <Button onClick={ () => {
+                                 navigate("/EditTodos/" + todo.number)
+                                }
+                            }>Edit</Button>
+                            </div>
                         </Typography>
                     </Card>
                 ))}
