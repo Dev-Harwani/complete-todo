@@ -62,6 +62,20 @@ function AllTodos() {
                                     navigate("/EditTodos/" + todo.number)
                                 }
                                 }>Edit</Button>
+                                <Button onClick={() => {
+                                    fetch("http://localhost:3000/todos/" + todo.number, {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Authorization": "Bearer "+ localStorage.getItem("token"),
+                                            "Content-type": "application/json"
+                                        }
+                                    }).then((res) => res.json().then((data) => {
+                                        console.log(data);
+                                        setTodos(data.todos);
+                                    }))
+                                }}>
+                                    Delete
+                                </Button>
                             </div>
 
                         </Typography>

@@ -21,7 +21,7 @@ const todoSchema = new mongoose.Schema({
     number: Number
 });
 
-let totalTodos = 0;
+
 const Todo = mongoose.model("Todo", todoSchema);
 const User = mongoose.model("User", userSchema);
 
@@ -89,7 +89,17 @@ app.get("/todos/:number", verifyUser, async (req,res) => {
 })
 
 app.post("/todos", verifyUser, async (req, res) => {
-    totalTodos = totalTodos + 1;
+    let totalTodos;
+    const latestTodo = await Todo.findOne({}).sort({number: -1});
+
+    if (latestTodo){
+        totalTodos = latestTodo.number;
+    }
+    else{
+        totalTodos = 0;
+    }
+    totalTodos++;
+
     const { title, description } = req.body;
     const newTodo = new Todo({
         title: title,
@@ -110,6 +120,17 @@ app.put("/todos/:number", verifyUser, async(req,res) => {
         res.status(200).json({message: "todo updated"});
 
     }
+
+})
+
+app.delete("/todos/:number", verifyUser, async(req,res) => {
+    const number = parseInt(req.params.number);
+    if (number){
+        await Todo.deleteOne({number: number});
+        const todos = await Todo.find({ createdBy: req.user.username });
+        res.status(200).json({message: "todo deleted", todos})
+    }
+
 
 })
 
