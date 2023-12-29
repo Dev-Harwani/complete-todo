@@ -1,34 +1,33 @@
+import {useNavigate, useParams} from "react-router-dom";
+import {useState} from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import {TextField} from "@mui/material";
 import Button from "@mui/material/Button";
-import {useParams} from "react-router-dom";
-import {useState} from "react";
 
-
-function EditTodo() {
+function EditTodo(){
+    const navigate = useNavigate();
     const [updatedTitle, setUpdatedTitle] = useState("");
     const [updatedDescription, setUpdatedDescription] = useState("");
 
-    let {todoNumber} = useParams();
-    const HandleEdit = () => {
+    const {todoNumber} = useParams();
 
+    function handleEdit () {
         fetch("http://localhost:3000/todos/" + todoNumber, {
+            method: "PUT",
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem("token"),
+                "Authorization": "Bearer "+ localStorage.getItem("token"),
                 "Content-type": "application/json"
             },
-            method: "PUT",
-            body:JSON.stringify({
+            body: JSON.stringify({
                 updatedTitle: updatedTitle,
                 updatedDescription: updatedDescription
-
             })
         }).then((res) => res.json().then((data) => {
-                console.log(data);
-            }))
+            console.log(data);
+            navigate("/alltodos")
+        }))
     }
-
 
     return (
         <div style={{
@@ -39,34 +38,31 @@ function EditTodo() {
             backgroundColor: "#eeeeee",
 
         }}>
-            {}
+
             <div style={{
                 marginTop: 250,
             }}>
                 <center>
                     <Typography variant='h6'>Edit your TODO</Typography>
                 </center>
-                <Card variant="outlined" style={{width: 300}}> {/* Set maxWidth instead of width */}
-                    <TextField fullWidth label="title" variant="outlined" margin="dense" size='small' onChange={
-                        (e) => {
-                            setUpdatedTitle(e.target.value);
-                        }
-                    }/>
-                    <br/>
-                    <TextField fullWidth label="Description" variant="outlined" margin="dense" size='small' onChange={
+                <Card variant="outlined" style={{ width: 300 }}> {/* Set maxWidth instead of width */}
+                    <TextField fullWidth label="Title" variant="outlined" margin="dense" size='small' onChange={(e) => {
+                        setUpdatedTitle(e.target.value);
+                    }} />
+                    <br />
+                    <TextField fullWidth  label="Description" variant="outlined" margin="dense" size='small' onChange={
                         (e) => {
                             setUpdatedDescription(e.target.value);
                         }
-                    }/>
-                    <br/>
+                    } />
+                    <br />
                     <center>
-                        <Button variant="outlined" onClick={HandleEdit}>Submit</Button>
+                        <Button variant="outlined" onClick={handleEdit}>Submit</Button>
                     </center>
                 </Card>
             </div>
         </div>
     )
 }
-
 
 export default EditTodo;

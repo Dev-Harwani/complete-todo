@@ -51,21 +51,27 @@ function AllTodos() {
             <div>
 
                 {todos.map((todo, index) => (
-                    <Card key={index} style={{display: "flex", justifyContent:"space-evenly"}}>
+                    <Card key={index} style={{display: "flex", justifyContent: "space-evenly"}}>
                         <Typography variant="body1">
                             <div>
-                         TITLE: {todo.title} DESCRIPTION: {todo.description}
+                                TITLE: {todo.title} DESCRIPTION: {todo.description}
 
                             </div>
-                            <div>
-                            <Button onClick={ () => {
-                                 navigate("/EditTodos/" + todo.number)
+                            <div style={{display:"flex", justifyContent:"center"}}>
+                                <Button onClick={() => {
+                                    navigate("/EditTodos/" + todo.number)
                                 }
-                            }>Edit</Button>
+                                }>Edit</Button>
                             </div>
+
                         </Typography>
                     </Card>
                 ))}
+                <div style={{display:"flex", justifyContent:"center"}}>
+                    <Button onClick={() => {
+                        navigate("/Addtodo")
+                    }}>ADD A TODO</Button>
+                </div>
             </div>
         </>
     )
