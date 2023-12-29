@@ -1,3 +1,6 @@
+run npm run dev command inside todo-frontend folder to load app.jsx
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
