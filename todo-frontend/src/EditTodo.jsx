@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useState} from "react";
+import { useState} from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import {TextField} from "@mui/material";
@@ -11,6 +11,7 @@ function EditTodo(){
     const [updatedDescription, setUpdatedDescription] = useState("");
 
     const {todoNumber} = useParams();
+
 
     function handleEdit () {
         fetch("http://localhost:3000/todos/" + todoNumber, {
@@ -42,10 +43,11 @@ function EditTodo(){
             <div style={{
                 marginTop: 250,
             }}>
+
                 <center>
                     <Typography variant='h6'>Edit your TODO</Typography>
                 </center>
-                <Card variant="outlined" style={{ width: 300 }}> {/* Set maxWidth instead of width */}
+                <Card variant="outlined" style={{ width: 300 }}>
                     <TextField fullWidth label="Title" variant="outlined" margin="dense" size='small' onChange={(e) => {
                         setUpdatedTitle(e.target.value);
                     }} />

@@ -80,6 +80,14 @@ app.get("/todos", verifyUser, async (req, res) => {
 
 });
 
+app.get("/todos/:number", verifyUser, async (req,res) => {
+    const number = parseInt(req.params.number);
+    if (number){
+        const todo = await Todo.findOne({number: number});
+        res.status(200).json(todo);
+    }
+})
+
 app.post("/todos", verifyUser, async (req, res) => {
     totalTodos = totalTodos + 1;
     const { title, description } = req.body;
